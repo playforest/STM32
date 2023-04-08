@@ -14,7 +14,8 @@ C_SOURCES = \
 main.c \
 stm32f1xx_it.c \
 stm32f1xx_hal_msp.c \
-system_stm32f1xx.c  
+system_stm32f1xx.c \
+uart.c
 
 # include common make file
 
