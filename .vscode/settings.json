@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "main.h": "c",
+        "stm32f1xx_hal.h": "c",
+        "termios.h": "c",
+        "unistd.h": "c",
+        "cerrno": "c",
+        "atomic": "c",
+        "sstream": "c",
+        "__config": "c",
+        "locale": "c",
+        "stm32f1xx_hal_conf.h": "c",
+        "cstdint": "c"
+    }
+}

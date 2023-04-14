@@ -1,0 +1,2 @@
+arm-none-eabi-gcc -c -O1 -g -mcpu=cortex-m3 -mthumb   -DUSE_HAL_DRIVER -DSTM32F100xB  -Og -Wall -fdata-sections -ffunction-sections -g -gdwarf-2 -MMD -MP -MF"build/main.d" -Wa,-a,-ad,-alms=build/main.lst main.c -o build/main.o
+arm-none-eabi-gcc -c -O1 -g -mcpu=cortex-m3 -mthumb   -DUSE_HAL_DRIVER -DSTM32F100xB  -Og -Wall -fdata-sections -ffunction-sections -g -gdwarf-2 -MMD -MP -MF"build/spi.d" -Wa,-a,-ad,-alms=build/spi.lst spi.c -o build/spi.o

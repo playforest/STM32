@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "stm32f1",
+            "includePath": [
+                "${workspaceFolder}/spi-loopback-ex6p1",
+                "${workspaceFolder}/Drivers/**",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/**"
+            ],
+            "defines": [
+                "USE_HAL_DRIVER",
+                "STM32F100xB"
+            ],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "/opt/homebrew/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mcpu=cortex-m3",
+                "-mthumb"
+            ]
+        }
+    ],
+    "version": 4
+}
