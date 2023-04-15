@@ -1,24 +1,28 @@
 /**
- ******************************************************************************
- * @file           : main.c
- * @brief          : Main program body
- ******************************************************************************
- * @attention
- *
- * Copyright (c) 2023 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
+ * Pinout connections:
+ * --------------------
+ * 25LC160 EEPROM    STM32VL Eval Board
+ * ---------------- ------------------
+ *    CS     ------->    PC10
+ *    SO     ------->    PB14 (MISO)
+ *    WP     ------->    -
+ *    GND    ------->    GND
+ *    VCC    ------->    3.3V
+ *    HOLD   ------->    GND
+ *    SCK    ------->    PB13 (SCK)
+ *    SI     ------->    PB15 (MOSI)
  */
 
 #include "main.h"
 #include "spi.h"
 #include "eeprom.h"
 #define USE_FULL_ASSERT 1
+
+static void MX_GPIO_Init(void);
+void SystemClock_Config(void);
+
+SPI_HandleTypeDef EEPROM_SPI;
+
 /**
  * @brief  The application entry point.
  * @retval int
@@ -33,15 +37,20 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
 
-  EEPROM_Init(SPI_PORT);
+  EEPROM_Init();
 
-  uint8_t dtx[2] = {0x00, 0x00};
+  uint8_t dtx[2] = {0x03, 0x00};
   uint8_t drx[2] = {0x00, 0x00};
   // send dummy data on tx line to initialise clock on clck line
-  HAL_SPI_TransmitReceive(SPI_PORT, &dtx, &drx, 1, 100);
+  HAL_SPI_TransmitReceive(&EEPROM_SPI, &dtx, &drx, 2, 100);
   HAL_Delay(1000);
 
-  EEPROM_ReadStatus(SPI_PORT);
+  EEPROM_ReadStatus(&EEPROM_SPI);
+
+  while (1)
+  {
+
+  }
 }
 
 
@@ -80,6 +89,30 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 }
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pins : PC9 PC10 PC11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_SET);
+}
+
 
 /**
  * @brief  This function is executed in case of error occurrence.

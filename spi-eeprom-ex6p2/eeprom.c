@@ -2,22 +2,20 @@
 #include "eeprom.h"
 #include "spi.h"
 
-void EEPROM_Init(SPI_HandleTypeDef *SPIx)
+void EEPROM_Init(void)
 {
   CS_Init(CS_PORT, CS_PIN);
-  SPI_Init(&SPIx);
+  SPI_Init(SPI_PORT);
 }
 
-void EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx)
+uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *spi)
 {
-  uint8_t cmdRDSR = 0x05;
-  uint8_t cmd[2] = {cmdRDSR, 0xff};
-  uint8_t res[8];
+  uint8_t cmd[] = {cmdRDSR, 0xff};
+  uint8_t res[2];
 
+  HAL_GPIO_WritePin(HOLD_PORT, HOLD_PIN, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
-  HAL_SPI_TransmitReceive(&SPIx, &cmd, &res, 2, 100);
-  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
-  // HAL_GPIO_WritePin(EEPROM_PORT, EEPROM_HOLD, GPIO_PIN_RESET);
+  HAL_SPI_TransmitReceive(spi, &cmd, &res, 2, 100);
 
   return res[1];
 }
