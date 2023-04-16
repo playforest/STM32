@@ -1,4 +1,6 @@
 
+#define WIP(x) ((x) & 1)
+
 #define SPI_PORT SPI2
 #define CS_PORT GPIOC
 #define CS_PIN GPIO_PIN_10
@@ -15,5 +17,6 @@ enum eepromCMD
     cmdWRSR = 0x01
 };
 
-uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx);
 void EEPROM_Init(void);
+uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx);
+void EEPROM_WriteEnable(SPI_HandleTypeDef *SPIx);
