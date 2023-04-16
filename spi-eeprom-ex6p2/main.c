@@ -36,6 +36,7 @@ int main(void)
 
   uint8_t dtx[2] = {0x03, 0x00};
   uint8_t drx[2] = {0x00, 0x00};
+  
   // send dummy data on tx line to initialise clock on clck line
   HAL_SPI_TransmitReceive(&EEPROM_SPI, &dtx, &drx, 2, 100);
   HAL_Delay(1000);
