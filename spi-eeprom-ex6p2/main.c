@@ -23,11 +23,6 @@ void SystemClock_Config(void);
 
 SPI_HandleTypeDef EEPROM_SPI;
 
-/**
- * @brief  The application entry point.
- * @retval int
- */
-
 int main(void)
 {
   HAL_Init();
