@@ -5,7 +5,6 @@
 static void MX_GPIO_Init(void);
 
 UART_HandleTypeDef huart;
-uint8_t buffer[10];
 
 int uart_open(USART_TypeDef *USARTx, uint32_t baud)
 {
@@ -53,26 +52,11 @@ int uart_main()
     MX_GPIO_Init();
     uart_open(USART1, 115200);
 
-  char *message = "Hello World!\n\r"; 
+    char *message = "Hello World!\n\r";
     while (1)
     {
-      	if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
-          HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_8);
-          HAL_UART_Transmit(&huart, (uint8_t *) message, strlen(message), 100);
-          HAL_Delay(100);
-
-	    }
-        // HAL_UART_Transmit(&huart, (uint8_t *)message, strlen(message), 100);
-        // HAL_Delay(250);
-
-        // if (HAL_UART_Receive(&huart, buffer, 10, HAL_MAX_DELAY) != HAL_OK)
-        // {
-        //   // ERROR
-        // };
-
-        // HAL_UART_Transmit(&huart, (uint8_t *) buffer, sizeof(buffer), 100);
-        
-
+        HAL_UART_Transmit(&huart, (uint8_t *)message, strlen(message), 100);
+        HAL_Delay(250);
     }
     return 1;
 }

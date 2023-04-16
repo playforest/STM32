@@ -7,7 +7,7 @@
         {
             "name": "Cortex Debug",
             "cwd": "${workspaceFolder}",
-            "executable": "./spi-loopback-ex6p1/build/application.elf",
+            "executable": "./spi-eeprom-ex6p2/build/application.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
@@ -16,7 +16,8 @@
             "configFiles": [
                 "interface/stlink.cfg",
                 "target/stm32f1x.cfg"
-            ]
+            ],
+            "showDevDebugOutput": "raw"
         }
     ]
 }

@@ -21,7 +21,7 @@ int spi_main()
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     // MX_SPI2_Init();
-    spi_init(SPI2);
+    SPI_Init(SPI2);
     spi_status = HAL_SPI_GetState(&hspi2);
 
     HAL_SPI_TransmitReceive(&hspi2, &txbuf, &rxbuf, 4, 1);
@@ -71,7 +71,7 @@ int spi_main()
     return 1;
 }
 
-void spi_init(SPI_TypeDef *SPIx)
+void SPI_Init(SPI_TypeDef *SPIx)
 {
     if (SPIx == SPI2)
     {
