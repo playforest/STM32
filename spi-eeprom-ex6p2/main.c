@@ -26,22 +26,28 @@ SPI_HandleTypeDef EEPROM_SPI;
 int main(void)
 {
   HAL_Init();
-
   SystemClock_Config();
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-
   EEPROM_Init();
 
-  uint8_t dtx[2] = {0x03, 0x00};
-  uint8_t drx[2] = {0x00, 0x00};
-  
+  uint8_t dtx = 0xff;
+  uint8_t drx = 0xff;
+
   // send dummy data on tx line to initialise clock on clck line
   HAL_SPI_TransmitReceive(&EEPROM_SPI, &dtx, &drx, 2, 100);
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
   HAL_Delay(1000);
 
   EEPROM_ReadStatus(&EEPROM_SPI);
+  HAL_Delay(1000);
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+  EEPROM_WriteEnable(&EEPROM_SPI);
+  HAL_Delay(1000);
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+  EEPROM_ReadStatus(&EEPROM_SPI);
+
 
   while (1)
   {
@@ -106,7 +112,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11, GPIO_PIN_SET);
 }
 
 
