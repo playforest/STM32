@@ -56,7 +56,7 @@ uint16_t EEPROM_WriteStatus(SPI_HandleTypeDef *SPIx)
   return res;
 }
 
-int EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address)
+void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address)
 {
   uint16_t cmd = cmdWRITE;
 
@@ -66,4 +66,18 @@ int EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address)
   HAL_SPI_Transmit(SPIx, &address, 1, HAL_MAX_DELAY);
   HAL_SPI_Transmit(SPIx, &buf, 1, HAL_MAX_DELAY);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+}
+
+uint16_t EEPROM_Read(SPI_HandleTypeDef *SPIx, uint16_t *address)
+{
+  uint16_t cmd = cmdREAD;
+  uint16_t res;
+
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
+  HAL_SPI_Transmit(SPIx, &cmd, 1, HAL_MAX_DELAY);
+  HAL_SPI_TransmitReceive(SPIx, &address, &res, 1, HAL_MAX_DELAY);
+
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+
+  return res;
 }

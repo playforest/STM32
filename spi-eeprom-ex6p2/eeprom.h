@@ -22,4 +22,5 @@ uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx);
 void EEPROM_WriteEnable(SPI_HandleTypeDef *SPIx);
 void EEPROM_WriteDisable(SPI_HandleTypeDef *SPIx);
 uint16_t EEPROM_WriteStatus(SPI_HandleTypeDef *SPIx);
-int EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf)
+void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address);
+void EEPROM_Read(SPI_HandleTypeDef *SPIx, uint16_t *address);
