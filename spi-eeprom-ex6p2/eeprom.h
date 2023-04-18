@@ -18,6 +18,8 @@ enum eepromCMD
     cmdWREN = 0x06          // set the write enable latch (enable write operation)
 };
 
+void set_cs_pin(int state);
+
 void EEPROM_Init(void);
 uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx);
 void EEPROM_WriteEnable(SPI_HandleTypeDef *SPIx);

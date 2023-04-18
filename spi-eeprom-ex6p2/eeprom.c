@@ -8,6 +8,11 @@ void EEPROM_Init(void)
   SPI_Init(SPI_PORT);
 }
 
+void set_cs_pin(int state)
+{
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, state);
+}
+
 uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx)
 {
   uint8_t cmd[] = {cmdRDSR, 0xff};
