@@ -16,6 +16,8 @@
 #include "main.h"
 #include "spi.h"
 #include "eeprom.h"
+#include <string.h>
+
 #define USE_FULL_ASSERT 1
 
 static void MX_GPIO_Init(void);
@@ -40,15 +42,31 @@ int main(void)
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
   HAL_Delay(1000);
 
-  EEPROM_ReadStatus(&EEPROM_SPI);
-  HAL_Delay(1000);
-  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
-  EEPROM_WriteEnable(&EEPROM_SPI);
-  HAL_Delay(1000);
-  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
-  EEPROM_ReadStatus(&EEPROM_SPI);
+  // EEPROM_ReadStatus(&EEPROM_SPI);
+  // HAL_Delay(1000);
+  // HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+  // EEPROM_WriteEnable(&EEPROM_SPI);
+  // HAL_Delay(1000);
+  // HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+  // EEPROM_ReadStatus(&EEPROM_SPI);
+  uint8_t message = 0b10101010;
+  uint8_t add[] = {0b00000000, 0b00001010};
+  // uint8_t add[2] = {0x01, 0x01};
+  uint8_t offset = 0b10101010;
 
+  // uint16_t message_len = len(message);
+  // uint8_t tx_data[message_len];
 
+  // Copy message to tx_data array
+  // for (int i = 0; i < message_len; i++) {
+  //   tx_data[i] = (uint8_t) message[i];
+  // }
+
+  // EEPROM_Write(&EEPROM_SPI, &message, 1, &offset);
+  // HAL_Delay(5000);
+  uint8_t data;
+  EEPROM_Read(&EEPROM_SPI, &add, &data);
+  
   while (1)
   {
 

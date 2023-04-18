@@ -70,6 +70,8 @@ void SPI_Init(SPI_TypeDef *SPIx)
   {
     HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
   }
+
+
 }
 
 void CS_Init(GPIO_TypeDef *GPIOx, uint16_t GPIO_PIN_x)

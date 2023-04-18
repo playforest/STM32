@@ -6,6 +6,7 @@
 #define CS_PIN GPIO_PIN_10
 #define HOLD_PORT GPIOC
 #define HOLD_PIN GPIO_PIN_11
+#define PAGESIZE 16
 
 enum eepromCMD
 {
@@ -22,5 +23,5 @@ uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx);
 void EEPROM_WriteEnable(SPI_HandleTypeDef *SPIx);
 void EEPROM_WriteDisable(SPI_HandleTypeDef *SPIx);
 uint16_t EEPROM_WriteStatus(SPI_HandleTypeDef *SPIx);
-void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address);
-void EEPROM_Read(SPI_HandleTypeDef *SPIx, uint16_t *address);
+void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint8_t count, uint8_t *address);
+uint16_t EEPROM_Read(SPI_HandleTypeDef *SPIx, uint8_t *address, uint8_t *data);

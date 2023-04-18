@@ -12,13 +12,13 @@ uint8_t EEPROM_ReadStatus(SPI_HandleTypeDef *SPIx)
 {
   uint8_t cmd[] = {cmdRDSR, 0xff};
   // uint8_t cmd = (0x05 << 8) | 0xff;
-  // uint8_t res[2];
-  uint8_t res;
+  uint8_t res[2];
+  // uint8_t res;
   HAL_GPIO_WritePin(HOLD_PORT, HOLD_PIN, GPIO_PIN_SET);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(SPIx, &cmd, &res, 2, HAL_MAX_DELAY);
-  
-  return res;
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
+  return res[1];
 }
 
 void EEPROM_WriteEnable(SPI_HandleTypeDef *SPIx)
@@ -53,30 +53,34 @@ uint16_t EEPROM_WriteStatus(SPI_HandleTypeDef *SPIx)
   HAL_GPIO_WritePin(HOLD_PORT, HOLD_PIN, GPIO_PIN_SET);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
   HAL_SPI_TransmitReceive(SPIx, &cmd, &res, 2, HAL_MAX_DELAY);
+  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
   return res;
 }
 
-void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint16_t *address)
+void EEPROM_Write(SPI_HandleTypeDef *SPIx, uint8_t *buf, uint8_t count, uint8_t *address)
 {
   uint16_t cmd = cmdWRITE;
+  uint8_t add[] = {0b00000000, 0b00001010};
 
   EEPROM_WriteEnable(SPIx);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
   HAL_SPI_Transmit(SPIx, &cmd, 1, HAL_MAX_DELAY);
-  HAL_SPI_Transmit(SPIx, &address, 1, HAL_MAX_DELAY);
-  HAL_SPI_Transmit(SPIx, &buf, 1, HAL_MAX_DELAY);
+  HAL_SPI_Transmit(SPIx, &add, 2, HAL_MAX_DELAY);
+  HAL_SPI_Transmit(SPIx, &buf, count, HAL_MAX_DELAY);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
 }
 
-uint16_t EEPROM_Read(SPI_HandleTypeDef *SPIx, uint16_t *address)
+uint16_t EEPROM_Read(SPI_HandleTypeDef *SPIx, uint8_t *address, uint8_t *data)
 {
   uint16_t cmd = cmdREAD;
-  uint16_t res;
+  uint8_t res[2];
+  uint8_t add[] = {0b00000000, 0b00001010};
+  while (WIP(EEPROM_ReadStatus(SPIx)));
 
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);
   HAL_SPI_Transmit(SPIx, &cmd, 1, HAL_MAX_DELAY);
-  HAL_SPI_TransmitReceive(SPIx, &address, &res, 1, HAL_MAX_DELAY);
-
+  HAL_SPI_Transmit(SPIx, &add, 2, HAL_MAX_DELAY);
+  HAL_SPI_Receive(SPIx, &data, 1, HAL_MAX_DELAY);
   HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
 
   return res;
