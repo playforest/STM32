@@ -68,7 +68,11 @@ void SPI_Init(SPI_TypeDef *SPIx)
     Error_Handler();
   } else
   {
-    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);       // blue led on
+    // dummy transmission to initialise SPI clck line
+    uint8_t dtx = 0xff;
+    uint8_t drx = 0xff;
+    HAL_SPI_TransmitReceive(&EEPROM_SPI, &dtx, &drx, 2, 100);
   }
 
 

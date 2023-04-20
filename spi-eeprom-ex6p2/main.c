@@ -34,23 +34,14 @@ int main(void)
   MX_GPIO_Init();
   EEPROM_Init();
 
-  uint8_t dtx = 0xff;
-  uint8_t drx = 0xff;
+  set_cs_pin(GPIO_PIN_SET);
 
-  // send dummy data on tx line to initialise clock on clck line
-  HAL_SPI_TransmitReceive(&EEPROM_SPI, &dtx, &drx, 2, 100);
-  HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
   HAL_Delay(1000);
 
-  // EEPROM_ReadStatus(&EEPROM_SPI);
-  // HAL_Delay(1000);
-  // HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
-  // EEPROM_WriteEnable(&EEPROM_SPI);
-  // HAL_Delay(1000);
-  // HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);
-  // EEPROM_ReadStatus(&EEPROM_SPI);
   uint8_t message = 0b10101010;
-  uint8_t add[] = {0b00000000, 0b00001010};
+  // uint8_t add[] = {0b00000000, 0b00001010};
+  uint8_t add[] = {0b00000000, 0b00000010};
+
   // uint8_t add[2] = {0x01, 0x01};
   uint8_t offset = 0b10101010;
 
